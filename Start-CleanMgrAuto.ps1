@@ -22,13 +22,8 @@ foreach ($subKey in $subKeys) {
 	$keyPath = $baseKey + $subKey
 	if (Test-Path $keyPath) {
 		Write-Host("Found key: " + $keyPath)
-		$key = Get-ItemProperty $keyPath -ErrorAction SilentlyContinue
-		if ($key -ne '') {
-			$value = Get-ItemProperty $keyPath -Name StateFlags0001 -ErrorAction SilentlyContinue | Out-Null
-			if ($value -eq $null) {
-				New-ItemProperty -Path $keyPath -Name StateFlags0001 -PropertyType DWord -Value 2 -ErrorAction SilentlyContinue
-			}
-		}
+		$value = Get-ItemProperty $keyPath -Name StateFlags0001 -ErrorAction SilentlyContinue | Out-Null
+		New-ItemProperty -Path $keyPath -Name StateFlags0001 -PropertyType DWord -Value 2 -ErrorAction SilentlyContinue
 	}
 	else {
 		Write-Host("No key:" + $keyPath)
@@ -36,7 +31,7 @@ foreach ($subKey in $subKeys) {
 }
 
 $command = "cleanmgr"
-$arguments = ' /sagerun:1'
+$arguments = '/sagerun:1'
 Start-Process $command $arguments -ErrorAction SilentlyContinue
 
 
